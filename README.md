@@ -1,5 +1,6 @@
-# mysql
+mysql
 ===========================
+
 This cookbook will install and configure MYSQL server
 
 Supported OS
