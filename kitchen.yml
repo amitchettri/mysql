@@ -1,32 +1,35 @@
 ---
-driver:
-  name: vagrant
+  driver:
+    name: ec2
+    aws_ssh_key_id: rakesh-new-key
+    security_group_ids: ["sg-0f13a1c94e61fd2e3"]
+    region: us-east-2
+    availability_zone: b
+    require_chef_omnibus: true
+    instance_type: t2.micro
+    associate_public_ip: true
+    shared_credentials_profile: rakesh-new-key
 
-## The forwarded_port port feature lets you connect to ports on the VM guest via
-## localhost on the host.
-## see also: https://www.vagrantup.com/docs/networking/forwarded_ports.html
+  provisioner:
+    name: chef_zero
+    cookbook_path: cookbooks
 
-#  network:
-#    - ["forwarded_port", {guest: 80, host: 8080}]
+  verifier:
+    name: inspec
 
-provisioner:
-  name: chef_zero
+  platforms:
+    - name: aws-centos-7
+      driver:
+        image_id: ami-00f8e2c955f7ffa9b
+      transport:
+        ssh_key: /root/.ec2/rakesh-new-key.pem
+        username: centos
 
-  ## product_name and product_version specifies a specific Chef product and version to install.
-  ## see the Chef documentation for more details: https://docs.chef.io/workstation/config_yml_kitchen/
-  #  product_name: chef
-  #  product_version: 16
-
-verifier:
-  name: inspec
-
-platforms:
-  - name: ubuntu-20.04
-  - name: centos-8
-
-suites:
-  - name: default
-    verifier:
-      inspec_tests:
-        - test/integration/default
-    attributes:
+  suites:
+    - name: aws-mysql
+      run_list:
+      - recipe[mysql]
+      verifier:
+        inspec_tests:
+          - test/integration/default/default_test.rb
+      attributes:
