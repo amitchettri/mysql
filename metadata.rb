@@ -1,6 +1,6 @@
 name 'mysql'
 maintainer 'Rakesh Korukonda'
-maintainer_email 'rakesh.korukonda@hpe.com'
+maintainer_email 'rakesh.korukonda2412@gmail.com'
 license 'All Rights Reserved'
 description 'Installs/Configures mysql'
 version '0.1.0'
